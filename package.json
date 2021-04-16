@@ -2,7 +2,7 @@
   "name": "MagisterAPI",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/main.js",
   "dependencies": {
     "body-parser": "^1.19.0",
     "class-transformer": "^0.4.0",
@@ -21,7 +21,10 @@
     "typescript": "^4.2.4"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc --project tsconfig.prod.json && npm prune --production",
+    "start": "node .",
+    "once": "tsc && npm start",
+    "dev": "tsc-watch --onSuccess \"node . dev\""
   },
   "repository": {
     "type": "git",
