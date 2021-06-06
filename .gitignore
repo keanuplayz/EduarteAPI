@@ -1,5 +1,6 @@
 #Specific to this repo
 *.http
+apidoc/
 
 # Logs
 logs

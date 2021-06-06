@@ -1,0 +1,8 @@
+{
+  "name": "EduArte API",
+  "version": "1.0.0",
+  "description": "EduArte API Documentation written with APIDoc.",
+  "title": "EduArte API Docs",
+  "url": "http://localhost:6000",
+  "sampleUrl": "http://localhost:6000"
+}
