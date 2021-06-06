@@ -7,4 +7,4 @@ const app = createExpressServer({
   controllers: [__dirname + '/controllers/*.js'],
 });
 
-app.listen(3000);
+app.listen(6000);

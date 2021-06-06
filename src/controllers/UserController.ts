@@ -1,37 +1,32 @@
-import { Body, Get, Post, JsonController } from 'routing-controllers';
+import { Post, JsonController, BodyParam } from 'routing-controllers';
 import * as puppeteer from 'puppeteer';
 
 @JsonController()
 export class UserController {
-  @Get('/users')
-  getAll() {
-    return 'This action returns all users';
-  }
-
-  @Post('/users')
-  async post(@Body({ required: true }) user: string, passwd: string, school: string) {
+  @Post('/token')
+  async post(@BodyParam('user', {required: true}) user: string, @BodyParam('passwd', {required: true}) passwd: string, @BodyParam('school', {required: true}) school: string) {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
-    await page.goto('https://en.wikipedia.org', { waitUntil: 'networkidle2' });
+    await page.goto(`https://${school}.educus.nl`, { waitUntil: 'networkidle2' });
+    await page.waitForSelector('input[name=gebruikersnaam]');
+    await page.focus('input[name=gebruikersnaam]');
+    await page.keyboard.type(user);
+    await page.focus('input[name=wachtwoord]');
+    await page.keyboard.type(passwd);
+    await page.$eval('a#id4', (btn: HTMLButtonElement) => btn.click());
+    await page.waitForSelector('ul.blocks');
 
-    await page.waitForSelector('input[name=search]');
-
-    await page.$eval(
-      'input[name=search]',
-      (el: HTMLInputElement) => (el.value = 'Adenosine triphosphate'),
-    );
-
-    await page.click('input[type=submit]');
-    await page.waitForSelector('#mw-content-text');
-    const text = await page.evaluate(() => {
-      const anchor = document.querySelector('#mw-content-text');
-      return anchor.textContent;
-    });
-
-    // const cookies = await page.cookies();
+    // Fetch the cookies from the current page.
+    let cookieArray: string[] = [];
+    await page.cookies()
+      .then(cookie => {
+        let name = cookie[0].name;
+        let value = cookie[0].value.replace("\\\"", '')
+        cookieArray.push(name, value)
+      });
 
     await browser.close();
 
-    return text;
+    return {cookieArray};
   }
 }
