@@ -23,5 +23,6 @@
  *      ]
  *   ]
  *
- * @apiError ParamRequiredError Body parameter "<param>" is required for request on POST /token
+ * @apiError (Error 4xx) ParamRequiredError Body parameter "<param>" is required for request on POST /token
+ * @apiError (Error 5xx) TimeoutError Occurs after 30 seconds. You entered the wrong credentials.
  */
